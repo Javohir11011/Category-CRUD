@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose, { connect } from "mongoose";
 import { application, db } from "./src/config/index.js";
-import { authRoutes } from "./src/routes/index.js";
+import { authRoutes, categoryRouter } from "./src/routes/index.js";
 
 const app = express();
 app.use(express.json());
@@ -14,6 +14,7 @@ try {
     });
 }
 app.use("/auth", authRoutes);
+app.use("/category", categoryRouter);
 app.use((err, req, res, next) => {
     console.error(err.message);
     res.status(500).send("Something broke!");
