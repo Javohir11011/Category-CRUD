@@ -1,5 +1,7 @@
 import { Router } from "express";
-import { getByIdCategory, getallCategory, newCategory } from "../controllers/index.js";
+import { deleteByIdCategory, getByIdCategory, getallCategory, newCategory, pagenationCategory, putByIdCategory, searchCategory } from "../controllers/index.js";
+import { categoryMiddleware } from "../middleware/category.middleware.js";
+import { CategorySchema } from "../schema/category.schema.js";
 
 
 
@@ -7,8 +9,10 @@ import { getByIdCategory, getallCategory, newCategory } from "../controllers/ind
 export const categoryRouter = Router()
 
 
-categoryRouter.get("/all", getallCategory)
-categoryRouter.get("/:id", getByIdCategory)
-categoryRouter.post("/new", newCategory)
-categoryRouter.put("/:id", getallCategory)
-categoryRouter.delete("/all", getallCategory)
+categoryRouter.get("/all", categoryMiddleware(CategorySchema), getallCategory)
+categoryRouter.get("/p", pagenationCategory)
+categoryRouter.get("/:id", categoryMiddleware(CategorySchema), getByIdCategory)
+categoryRouter.post("/new", categoryMiddleware(CategorySchema), newCategory)
+categoryRouter.put("/:id",  categoryMiddleware(CategorySchema), putByIdCategory)
+categoryRouter.delete("/del/:id", categoryMiddleware(CategorySchema), deleteByIdCategory)
+categoryRouter.get("/search", searchCategory)
